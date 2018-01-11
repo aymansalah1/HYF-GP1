@@ -1,0 +1,53 @@
+.contactDetails{
+  width: 90%;
+  display: flex;
+  flex-flow: row wrap;
+
+  border-radius: 25px;
+    border: 2px solid #ed2f25;
+    margin: auto;
+    margin-top: 10px;
+    
+    
+}
+.contactInfo {
+  width: 65%;
+   display: flex;
+  flex-flow: row wrap;
+
+  border-radius: 25px;
+  border: 2px solid olive;
+  margin-top: 10px;
+  margin-left: 5px;
+}
+.contactInfo_sec{
+  width: 90%;
+  display: flex;
+  flex-flow: row wrap;
+
+   border-radius: 25px;
+  border: 2px solid brown;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+
+.contactInfo_sec_title{
+  width: 30%;
+}
+
+.contactInfo_sec_data{
+  width: 70%;
+}
+.contactRemoveBtn{
+  width: 100%;
+}
+.remove-field{
+  width: 90%;
+}
+.contactSVGRegion{
+  width:100%;
+}
+.contactInfoDIV{
+  width: 100%;
+  
+}

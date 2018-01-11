@@ -1,0 +1,10 @@
+.orgContainer {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    /*border-radius: 25px;
+    border: 2px solid #73AD21;*/
+    background-color: #FFE0B2;
+    padding: 20px; 
+    margin: 10px;
+}

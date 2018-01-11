@@ -1,0 +1,32 @@
+.orgDetails{
+  width: 30%;
+  padding: 10px;
+  display: flex;
+  flex-flow: row wrap;
+  margin-top: 10px;
+  margin-left: 5px;
+  overflow: scroll;
+    
+}
+.orgInfo {
+  width: 90%;
+   display: flex;
+  flex-flow: row wrap;
+}
+.orgTags{
+  width: 90%;
+  display: flex;
+  flex-flow: row wrap;
+}
+.tag{
+width: 30%;
+}
+.orgName{
+width: 65%;
+}
+.orgLogo{
+  width:25%;
+}
+.orgLogoIMG{
+  width: 100%;
+}

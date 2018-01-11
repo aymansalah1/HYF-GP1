@@ -1,0 +1,23 @@
+.tagContainer {
+   display: flex;
+   flex-flow: row wrap;
+    width: 90%;
+    padding: 20px; 
+}
+.filtersContainer{
+   display: flex;
+   flex-flow: row wrap;
+   width: 95%;
+    padding: 20px; 
+}
+.filtersTabs{
+  width: 100%;
+}
+.sVGFiltersMAp{
+  margin: 20px;
+}
+
+.tagItem{
+  width: 30%;
+  padding: 10px;
+}
