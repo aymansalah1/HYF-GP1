@@ -86,7 +86,6 @@ router.post('/login', (req, res) => {
             results.forEach(result => {
                 if (req.body.username === result.username) {
                     let hashed=bcrypt.hashSync(req.body.password,10)
-                    console.log(hashed,(result.password===hashed))
                     if (bcrypt.compareSync(req.body.password, result.password)) {
                         isAdmin = true;
                     }
@@ -246,8 +245,6 @@ router.post('/login', (req, res) => {
                         FROM
                             regions
                     `);
-                        // console.log({active,pending})
-                        // res.json({active,pending, myToken });
                     }).then(results=>{
                         const myToken = jwt.sign({ username: req.body.username }, mySecret);
                         results.forEach(result => {
@@ -258,9 +255,7 @@ router.post('/login', (req, res) => {
                          };
                         });
                          res.json({activeOrgs,pendingOrgs,tags,regions, myToken });
-                        console.log(JSON.stringify({activeOrgs,pendingOrgs,regions, myToken }))
                     }).catch(error => {
-                        console.log(error)
                         res.status(500).send();
                     });
             }

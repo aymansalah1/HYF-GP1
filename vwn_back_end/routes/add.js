@@ -28,7 +28,6 @@ const queryPromise = (queryBody, values) => {
 }
 router.post('/add', (req, res) => {
     const data = req.body;
-    console.log(data)
     let insertedOrgId;
     queryPromise(`
         INSERT INTO
@@ -69,7 +68,6 @@ router.post('/add', (req, res) => {
             res.status(200).send();
         }).catch(error => {
             res.status(500).send();
-            console.log(error)
         });
 });
 module.exports = router;
