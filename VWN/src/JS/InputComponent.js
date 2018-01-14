@@ -3,14 +3,18 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import { orange500, blue500 } from 'material-ui/styles/colors';
 import Checkbox from 'material-ui/Checkbox';
+import PasswordField from 'material-ui-password-field'
 
 const styles = {
+  password:{fontSize: '16px',
+   lineHeight: '24px', width: '256px', height: '72px', display: 'inline-block', position: 'relative', backgroundColor: 'transparent',
+    fontFamily: 'Roboto, sans-serif', transition: 'height 200ms cubic-bezier(0.23, 1, 0.32, 1) 0ms', cursor: 'auto'},
   errorStyle: {
     color: orange500,
   },
   underlineStyle: {
     borderColor: orange500,
-    textAllign:'left'
+    textAllign: 'left'
   },
   floatingLabelStyle: {
     color: orange500,
@@ -22,7 +26,7 @@ const styles = {
 
 class InputComponent extends React.Component {
   changeValue = (event) => {
-    if(this.props.onChange)this.props.onChange(this.props.name,event.currentTarget[this.props.type === 'checkbox' ? 'checked' : 'value'])
+    if (this.props.onChange) this.props.onChange(this.props.name, event.currentTarget[this.props.type === 'checkbox' ? 'checked' : 'value'])
     this.props.setValue(event.currentTarget[this.props.type === 'checkbox' ? 'checked' : 'value']);
     event.preventDefault();
   }
@@ -36,7 +40,7 @@ class InputComponent extends React.Component {
     let input;
     switch (this.props.type) {
       case 'textarea':
-        input=<TextField style={{textAlign:'left'}}
+        input = <TextField style={{ textAlign: 'left' }}
           floatingLabelText={this.props.title}
           floatingLabelStyle={styles.floatingLabelStyle}
           floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
@@ -45,10 +49,12 @@ class InputComponent extends React.Component {
           onChange={this.changeValue}
           value={this.props.getValue()}
           name={this.props.name}
+          hintText={this.props.placeholder}          
+          
         />
         break;
       case 'checkbox':
-      input=<Checkbox
+        input = <Checkbox
           label={this.props.title} {...this.props.isRequired() ? '*' : null}
           checked={this.props.getValue()}
           onCheck={this.changeValue}
@@ -58,14 +64,27 @@ class InputComponent extends React.Component {
           name={this.props.name}
         />
         break;
+      case 'password':
+        input = <PasswordField
+        style={styles.password}
+          floatingLabelText={this.props.title}
+          floatingLabelStyle={styles.floatingLabelStyle}
+          floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
+          onChange={this.changeValue}
+          value={this.props.getValue()}
+          name={this.props.name}
+          hintText={this.props.placeholder}
+          />
+        break;
       default:
-        input=<TextField
+        input = <TextField
           floatingLabelText={this.props.title} {...this.props.isRequired() ? '*' : null}
           floatingLabelStyle={styles.floatingLabelStyle}
           floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
           onChange={this.changeValue}
           value={this.props.getValue()}
           name={this.props.name}
+          hintText={this.props.placeholder}          
         />
         break;
     }
@@ -87,7 +106,7 @@ class InputComponent extends React.Component {
     //     placeholder={this.props.type === 'checkbox' ? '' : this.props.placeholder}
     //     checked={this.props.type === 'checkbox' && this.props.getValue() ? 'checked' : null}
     //   />
-const show=input
+    const show = input
     return (
       <div className={className} >
         {show}

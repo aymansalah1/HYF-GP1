@@ -45,6 +45,7 @@ export default class AddForm extends Component {
       CompanyLogo: "",
       stepIndex: 0,
       visited: [],
+      canClick:true
     };
   }
   resetForm = () => {
@@ -74,7 +75,6 @@ export default class AddForm extends Component {
   }
   requestAdd = (data) => {
     if(this.state.canSubmit){
-      console.log("a7aa")
     let newOrgObj={ CompanyName:this.state.CompanyName,
     CompanyDescription: this.state.CompanyDescription,
     CompanyLogo:this.state.CompanyLogo,
@@ -95,7 +95,16 @@ export default class AddForm extends Component {
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
-          this.setState
+          let refreshedState= Object.assign({},this.state,{
+            canSubmit: false, newOrgContacts: [], newOrgTags: [],
+            CompanyName: "",
+            CompanyDescription: "",
+            CompanyLogo: "",
+            stepIndex: 0,
+            visited: [],
+            canClick:true
+          })
+          this.setState(refreshedState,()=>{Observable.setContacts([])})
         }
         else if (xhr.status === 500) {
           showMessage(
@@ -215,7 +224,7 @@ export default class AddForm extends Component {
             validations={{
               myCustomIsnotEmptyValidation: (values, value) => {
 
-                this.setState({ newOrgTags: value }, () => { console.log(this.state) })
+                this.setState({ newOrgTags: value })
                 return value.length ? true : false; // You can return an error
               },
             }}
@@ -224,13 +233,14 @@ export default class AddForm extends Component {
       case 2:
         return (<div>
           <AddLocationForm name="ContactForm" svgPs={this.props.svgPs} extended />
-          <ContactsContainer contacts={this.state.newOrgContacts} isRemovable={true} />
+          <ContactsContainer contacts={this.state.newOrgContacts} isRemovable={true} svg={this.props.svgPs} />
           <div style={{marginTop: 12,
       display:this.state.canSubmit?'block':'none'}}>
                 <RaisedButton
                   label="Submit Your Organization"
                   primary={true}
-                  onClick={()=>{console.log('a7teen');this.requestAdd()}}
+                  onClick={()=>{this.requestAdd()}}
+                  disable={!this.state.canclick?true:false}
                   style={{ display: this.state.canSubmit ? 'block' : 'none' }}
                 />
               </div>

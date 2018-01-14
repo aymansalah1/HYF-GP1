@@ -6,8 +6,10 @@ class Observable {
         this.selectedRegions = {};
         this.selectedTags = {};
         this.contacts = [];
-        this.CurrentHash=''
+        this.CurrentHash = ''
+        this.logedInUser = null
         this.contactRegion = null
+        this.adminreRponse = null;
 
         this.actions = [
             'markSelectedBarItem',
@@ -18,8 +20,23 @@ class Observable {
             'clearNewOrgTags',
             'contactRegion',
             'reflectSelectedRegion',
-            'reflectAddedContacts'
+            'reflectAddedContacts',
+            "deleteOrg",
+            "addNewOrg",
+            "logIn"
         ];
+    }
+    setAdminresponse = (value) => {
+        this.adminreRponse = value;
+    }
+    getAdminResponse = () => {
+        return this.adminreRponse;
+    }
+    setLogedinInfo = (userinfo) => {
+        this.logedInUser = userinfo;
+    }
+    getLogedinInfo = () => {
+        return this.logedInUser;
     }
     getContactRegion = () => {
         return this.contactRegion
@@ -28,7 +45,7 @@ class Observable {
         this.contactRegion = value
         this.notify('contactRegion')
         this.notify('reflectSelectedRegion')
-        
+
     }
     addContacts = (contact) => {
         this.contacts.push(contact)
@@ -59,10 +76,10 @@ class Observable {
     getSelectedRegions() {
         return this.selectedRegions
     }
-    saveCurrentHash=()=>{
-     this.CurrentHash=window.location.hash
+    saveCurrentHash = () => {
+        this.CurrentHash = window.location.hash
     }
-    getlastHash=()=>{
+    getlastHash = () => {
         return this.CurrentHash
     }
     setHash = (filterID, type) => {
@@ -115,7 +132,7 @@ class Observable {
                     case "T":
                         {
 
-                            hashSec.slice(1).split(',').forEach(orgID =>this.addRemoveHashFilter(this.selectedTags, orgID))
+                            hashSec.slice(1).split(',').forEach(orgID => this.addRemoveHashFilter(this.selectedTags, orgID))
                             break;
                         }
                     default:

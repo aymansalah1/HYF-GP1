@@ -9,16 +9,16 @@ import Observable from './Observable';
 
 
 export default class OrgContainer extends Component {
-    // constructor(props) {
-    //     super(props);
-
-    //     // // State
-    //     // this.state = {
-    //     //     selectedTags: {},
-    //     //     matchingOrgs: {},
-    //     //     firstTime: true
-    //     // };
-    // }
+    constructor(props) {
+        super(props);
+        // State
+        this.state = {
+            selectedTags: {},
+            matchingOrgs: {},
+            orgs: this.props.orgs,
+            firstTime: true
+        };
+    }
 
     componentWillMount() {
         this.renderOrgs('tagSelection');
@@ -28,15 +28,15 @@ export default class OrgContainer extends Component {
     componentWillUnmount() {
         Observable.unsubscribe(this.renderOrgs);
     }
-    renderOrgs = (action) => {
+    renderOrgs = (action, value) => {
         if (action === 'tagSelection') {
             const matchingOrgs = {};
-            const orgs = this.props.orgs;
+            const orgs = this.state.orgs;
             let selectedTags = Observable.getSelectedTags()
             let selectedRegions = Observable.getSelectedRegions()
             const tagsareSelected = Object.keys(selectedTags).length !== 0
             const regionsareSelected = Object.keys(selectedRegions).length !== 0
-            if (!regionsareSelected && !tagsareSelected) {
+            if ((!regionsareSelected && !tagsareSelected) || this.props.isAdmin) {
                 for (const orgId in orgs) {
                     matchingOrgs[orgId] = Object.assign({}, orgs[orgId]);
                     matchingOrgs[orgId].id = orgId;
@@ -93,6 +93,42 @@ export default class OrgContainer extends Component {
                 matchingOrgs: matchingOrgs
             });
         }
+        else if (action === "addNewOrg") {
+            if (!this.props.isPending) {
+                if (!this.state.matchingOrgs[value]) {
+                    console.log("not pending")
+                    let matchingOrgs = {};
+                    matchingOrgs = Object.assign({}, this.state.matchingOrgs)
+                    matchingOrgs[value.id] = value.org
+                    this.setState({
+                        matchingOrgs: matchingOrgs
+                    });
+                }
+            }
+            // if(!this.props.isAdmin)
+            // {
+            //     console.log("not pending")
+            //     let orgs = {};
+            //     orgs = Object.assign({}, this.state.orgs)
+            //     orgs[value.id] = value.org
+            //     this.setState({
+            //         orgs: orgs,
+
+            //     });
+
+            // }
+        }
+        else if (action === "deleteOrg") {
+            if (this.state.matchingOrgs[value]) {
+                let matchingOrgs = {};
+                matchingOrgs = Object.assign({}, this.state.matchingOrgs)
+                delete matchingOrgs[value]
+                this.setState({
+                    matchingOrgs: matchingOrgs
+                });
+
+            }
+        }
 
     }
     render = () => {
@@ -114,17 +150,23 @@ export default class OrgContainer extends Component {
         return <div className="orgContainer">
             {Object.keys(matchingOrgs).map((orgId, index) => {
                 let x = []
-                matchingOrgs[orgId].tags.forEach((tag)=>{
+                matchingOrgs[orgId].tags.forEach((tag) => {
                     if (svg[tag]) {
                         x.push(svg[tag]);
                     }
                 });
-              
+
                 return <OrgDetails
                     key={index}
+                    orgID={orgId}
                     org={matchingOrgs[orgId]}
                     tags={tags}
-                    svg={x.length>0?x:svg}
+                    myToken={this.props.myToken}
+                    // svg={x.length > 0 ? x : svg}
+                    svg={this.props.svg}
+                    serverLink={this.props.serverLink}
+                    isAdmin={this.props.isAdmin}
+                    isPending={this.props.isPending}
                 />
             }
             )}

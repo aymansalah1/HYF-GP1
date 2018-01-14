@@ -48,6 +48,7 @@ export default class Map extends Component {
 
     render() {
         let svgPs = this.props.svgPs;
+        console.log(svgPs)
         const isClickable = this.props.isClickable;
         const inAddMode = this.props.inAddMode;
         return <svg version="1.1" id="map" x="0px" y="0px" width="100%" height="200px" viewBox="0 0 429.358 500" enableBackground="new 0 0 429.358 500" >

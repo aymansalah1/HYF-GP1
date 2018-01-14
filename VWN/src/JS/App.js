@@ -18,6 +18,7 @@ import Loading from './Loading';
 import ErrorPage from './ErrorPage';
 
 const loginIcon = <FontIcon className="material-icons">Login</FontIcon>;
+const viewIcon = <FontIcon className="material-icons">View</FontIcon>;
 const addIcon = <FontIcon className="material-icons">Add</FontIcon>
 const homeIcon = <ActionHome />;
 const FilterIcon = <ActionFilterIcon />;
@@ -45,6 +46,51 @@ class App extends Component {
     };
 
   }
+  componentWillMount() {
+    Observable.subscribe(this.addRemoveOrg);
+    Observable.subscribe(this.reflectLogIn)
+    this.reflectLogIn("logIn")
+  }
+
+  componentWillUnmount() {
+    Observable.unsubscribe(this.addRemoveOrg);
+    Observable.unsubscribe(this.reflectLogIn);
+  }
+  getLoggedInHandler = () => {
+    return Observable.getLogedinInfo() ? true : false
+  }
+  reflectLogIn = (action) => {
+    if (action === 'logIn') {
+      this.setState({
+        isLoggedIn: Observable.getLogedinInfo() ? true : false
+      });
+      
+    }
+  }
+  addRemoveOrg = (action, value) => {
+    if (action === "addNewOrg") {
+      if (!this.state.orgs[value]) {
+        let orgs = {};
+        orgs = Object.assign({}, this.state.orgs)
+        orgs[value.id] = value.org
+        this.setState({
+          orgs: orgs
+        });
+      }
+
+    }
+    else if (action === "deleteOrg") {
+      if (this.state.orgs[value]) {
+        let orgs = {};
+        orgs = Object.assign({}, this.state.orgs)
+        delete orgs[value]
+        this.setState({
+          orgs: orgs
+        });
+
+      }
+    }
+  }
   componentDidMount = () => {
     const xhr = new XMLHttpRequest();
     xhr.open('Get', `${this.serverLink}search`, true);
@@ -70,12 +116,14 @@ class App extends Component {
 
   render = () => {
     if (this.state.status === 0) {
+
       return <Loading />;
     }
     if (this.state.status === 401 || this.state.status === 404 || this.state.status === 500) {
       return <ErrorPage status={this.state.status} />;
     }
     else {
+      const filterCount=Object.keys(Observable.getSelectedTags()).length +Object.keys(Observable.getSelectedRegions()).length 
       return (
 
         <MuiThemeProvider >
@@ -91,6 +139,16 @@ class App extends Component {
                       props.history.push(`/${path}`)
                     }}
                   />
+                  {this.state.isLoggedIn?<BottomNavigationItem
+                    label="logOut"
+                    icon={homeIcon}
+                    onClick={() => {
+                      Observable.setLogedinInfo(null)
+                      Observable.notify('logIn')
+                      const path = Observable.getlastHash()
+                      props.history.push(`/${path}`)
+                    }}
+                  />:null}
                 </Paper>
                 <Admin
                   serverLink={this.serverLink}
@@ -111,14 +169,14 @@ class App extends Component {
                     />
                     <BottomNavigationItem
                       label="As Admin"
-                      icon={loginIcon}
+                      icon={Observable.getLogedinInfo() ? viewIcon : loginIcon}
                       onClick={() => {
                         Observable.saveCurrentHash()
                         props.history.push('/admin')
                       }}
                     />
                     <BottomNavigationItem
-                      label={this.state.showFilters ? 'Hide Filters' : 'Show Filters'}
+                      label={this.state.showFilters ? 'Hide Filters' : `Show Filters ${filterCount? `(${filterCount})`:``}`}
                       icon={FilterIcon}
                       onClick={() => {
                         this.setState({

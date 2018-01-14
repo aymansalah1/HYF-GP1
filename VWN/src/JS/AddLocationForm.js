@@ -206,7 +206,8 @@ class AddLocationForm extends Component {
 
   validateForm = (action, model) => {
     if (model) {
-      let currentModel = this.refs.form.getModel();
+      // let currentModel = this.refs.form.getModel();
+      let currentModel = model;
       this.setState({ isValidForm: (currentModel.city !== "" && currentModel.email !== "" && currentModel.house_number !== "" && currentModel.phone !== "" && currentModel.post_code !== "" && currentModel.web !== "") })
     }
 
@@ -239,13 +240,11 @@ class AddLocationForm extends Component {
   addConact = (model) => {
     let selectedregion = Observable.getContactRegion()
     let id = Date.now()
-    var modelWithRegion = Object.assign(model, { Region: selectedregion ? selectedregion : null })
+    var modelWithRegion = Object.assign(model, { region: selectedregion ? selectedregion : null })
     let x = {}
     x[id] = modelWithRegion
     let oldvalue = this.props.getValue()
-    console.log(Object.assign({}, x, oldvalue))
     this.props.setValue(Object.assign({}, x, oldvalue))
-    alert(Object.assign({}, x, oldvalue))
   }
   enableButton = () => {
     this.setState({ canSubmit: true });

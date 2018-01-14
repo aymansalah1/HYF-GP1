@@ -80,7 +80,6 @@ export default class AddForm extends Component {
   }
   
   onFieldChange=(fieldName,value)=>{
-    console.log(fieldName,value)
     let CurrentState=this.state;
     CurrentState[fieldName]=value
     this.setState({CurrentState});
@@ -155,7 +154,7 @@ export default class AddForm extends Component {
           validations={{
             myCustomIsnotEmptyValidation:  (values, value)=> {
 
-              this.setState({newOrgTags:value},()=>{console.log(this.state)})
+              this.setState({newOrgTags:value})
               return value.length ? true : false; // You can return an error
             },
           }}

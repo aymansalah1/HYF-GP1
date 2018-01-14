@@ -12,9 +12,9 @@ export default class ContactDetails extends Component {
 
     render = () => {
         const contact = this.props.contact;
-        const svg = this.props.svg;
+       
+        const svg = [this.props.svg[contact.region]];
         return <div className="contactDetails">
-            
             {svg?
             <div className="contactSVGRegion">
                 <Map svgPs={svg} isRemovable={false} isClickable={false} />
